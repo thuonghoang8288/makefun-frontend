@@ -2,6 +2,7 @@
   {
     "file": "1-board.jpg",
     "path": "#/",
+    "caption": "Open bounties board, live from the make.fun API",
     "viewport": {
       "height": 800,
       "width": 1280
@@ -10,6 +11,7 @@
   {
     "file": "2-bounty.jpg",
     "path": "#/bounty/tiny-chess-01",
+    "caption": "Tiny chess bounty detail with prize and deadline",
     "viewport": {
       "height": 800,
       "width": 1280
@@ -18,6 +20,7 @@
   {
     "file": "3-leaderboard.jpg",
     "path": "#/bounty/tiny-chess-01/leaderboard",
+    "caption": "Tiny chess leaderboard, ranked entries",
     "viewport": {
       "height": 800,
       "width": 1280

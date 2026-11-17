@@ -4,3 +4,6 @@ out/
 
 # Editor and OS clutter, not part of the entry.
 .DS_Store
+
+# Local probe output (throwaway screenshots, scratch dumps) — never committed.
+scratch/
