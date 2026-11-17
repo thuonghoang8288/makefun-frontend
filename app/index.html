@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A fast, read-only frontend for make.fun: live bounty board, bounty pages, leaderboards and public profiles.">
+<title>make.fun — bounties, leaderboards &amp; profiles</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="main.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#/"><span class="brand-mark">◆</span> make.fun <span class="brand-sub">bounties</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#/" data-nav="board">Board</a>
+      <a href="#/bounty/tiny-chess-01" data-nav="bounty">Featured bounty</a>
+      <a href="#/profile/thuong-hoang" data-nav="profile">Profile</a>
+    </nav>
+    <form class="top-search" id="top-search" role="search">
+      <label class="sr-only" for="q">Search bounties or a profile</label>
+      <input id="q" name="q" type="search" placeholder="Search bounty or @handle…" autocomplete="off">
+    </form>
+  </div>
+</header>
+<main id="app" class="wrap"></main>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p>Live data from <a href="https://make.fun">make.fun</a>'s public API — read-only, no sign-in, no tracking.
+    Built for the <a href="https://make.fun/bounty/makefun-frontend-01">make.fun frontend bounty</a>.</p>
+    <p class="foot-note">Pots, fees and times refresh from the API; a bounty past its deadline takes no more entries even while its status still reads open.</p>
+  </div>
+</footer>
+<noscript><p class="wrap">This frontend needs JavaScript to load live data from make.fun's public API.</p></noscript>
+</body>
+</html>
