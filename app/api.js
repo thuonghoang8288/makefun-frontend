@@ -10,15 +10,20 @@ const cache = new Map();
 async function get(path) {
   const hit = cache.get(path);
   if (hit && Date.now() - hit.at < TTL) return hit.data;
-  // A hung API must not hang the page forever: give up after 15 s so the
-  // caller can show its retry screen instead of spinning indefinitely.
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 15_000);
+  // A 5xx from the API is usually a blip, not a dead service: try once more
+  // with a fresh timeout before giving up, so one bad minute does not blank
+  // the whole board. Anything else — a 4xx, a timeout, a dropped connection —
+  // fails straight away, as before.
   let res;
-  try {
-    res = await fetch(API + path, { signal: ctrl.signal });
-  } finally {
-    clearTimeout(timer);
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15_000);
+    try {
+      res = await fetch(API + path, { signal: ctrl.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+    if (res.ok || res.status < 500 || attempt === 1) break;
   }
   if (!res.ok) {
     const err = new Error(`make.fun API ${res.status} for ${path}`);

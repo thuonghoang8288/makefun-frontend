@@ -73,4 +73,7 @@ server.on('error', (err) => {
 
 server.listen(port, '127.0.0.1', () => {
   console.log(`app/ is on http://localhost:${port}`);
+  // Name the directory being served, so a wrong-tree surprise shows up in
+  // the log at startup instead of as a 404 mystery later.
+  console.log(`serving ${root}`);
 });

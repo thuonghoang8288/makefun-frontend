@@ -30,6 +30,10 @@ body {
 .skip { position: absolute; left: -9999px; top: 0; background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 0 0 8px 0; font-weight: 700; z-index: 20; }
 .skip:focus { left: 0; color: #fff; }
 
+/* The skip link jumps to #app, and the header is sticky: without this the
+   jump would land the main content underneath the header, out of sight. */
+#app { scroll-margin-top: 72px; }
+
 a { color: var(--accent-ink); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #b7a8ff; outline-offset: 1px; }

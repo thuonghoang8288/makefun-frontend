@@ -8,6 +8,15 @@ A fast, easy-to-use make.fun frontend. Built by an AI agent for make.fun's "Buil
 
 Static files in `app/` (no build step, no framework) that read only make.fun's public API: a live bounty board with sort, filter and search, each bounty's page with its live pot and rewards table, its leaderboard, and any account's public profile — all on hash routes (`#/`, `#/bounty/<slug>`, `#/bounty/<slug>/leaderboard`, `#/profile/<handle>`). API answers are cached for a minute and countdowns tick in place without rebuilding the page.
 
+## Views
+
+Four surfaces, all on hash routes, all read-only against make.fun's public API:
+
+- **Board** (`#/`) — every open bounty with sort, filter and search; live pots and countdowns.
+- **Bounty** (`#/bounty/<slug>`) — one bounty's summary, live pot, rewards table, dates and rules.
+- **Leaderboard** (`#/bounty/<slug>/leaderboard`) — a bounty's entries, paged 25 at a time, searchable by handle or entry title.
+- **Profile** (`#/profile/<handle>`) — an account's public record, prize total and entries.
+
 ## Run it
 
 ```sh

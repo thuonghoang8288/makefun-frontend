@@ -109,6 +109,14 @@ function parseRoute() {
 async function render() {
   window.__shotReady = false;
   const route = parseRoute();
+  // Remember where the reader was, so a reload lands back on the same view
+  // instead of always resetting to the board. Only the hash is stored —
+  // nothing personal — and only this tab's session remembers it.
+  try {
+    sessionStorage.setItem('makefun-last-view', location.hash || '#/');
+  } catch {
+    // Private mode or blocked storage: the page still works, it just forgets.
+  }
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.remove('active'));
   try {
     if (route.view === 'board') {
@@ -177,6 +185,18 @@ document.addEventListener('keydown', (e) => {
     searchInput.focus();
   }
 });
+
+// A fresh load with no hash goes back to the view this tab last showed,
+// if it remembers one — the render that follows is the same one that would
+// have run for the board, just pointed at the remembered route.
+if (!location.hash) {
+  try {
+    const saved = sessionStorage.getItem('makefun-last-view');
+    if (saved && saved.startsWith('#/')) location.hash = saved;
+  } catch {
+    // No stored view, or storage is blocked: the board is the fallback.
+  }
+}
 
 window.addEventListener('hashchange', render);
 render();

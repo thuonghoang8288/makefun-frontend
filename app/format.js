@@ -26,6 +26,8 @@ export function money(value) {
 export function bytes(value) {
   const n = Number(value);
   if (!Number.isFinite(n)) return '—';
+  // A negative byte count is bad data, not a size: show a dash, not '-3 KB'.
+  if (n < 0) return '—';
   if (n < 1024) return `${n} B`;
   if (n < 1048576) return `${(n / 1024).toFixed(0)} KB`;
   return `${(n / 1048576).toFixed(1)} MB`;

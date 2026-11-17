@@ -76,7 +76,7 @@ export function board(items, ui) {
       </label>
       <p class="controls-count" id="board-count" aria-live="polite"></p>
     </form>
-    <div class="grid" id="board-grid">${items.map(card).join('')}</div>`;
+    <div class="grid" id="board-grid">${items.length ? items.map(card).join('') : '<p class="empty">No bounties are live right now — check back soon, new ones land regularly.</p>'}</div>`;
 }
 
 /** A bounty's page: summary, live pot, rewards table, dates, rules. */

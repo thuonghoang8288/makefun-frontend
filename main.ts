@@ -15,7 +15,7 @@
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { cpSync, existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
@@ -89,6 +89,36 @@ writeFileSync(
   join(out, 'dossier.json'),
   buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 3, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 16777216 }),
 );
+
+// Trust the write, then check it: re-read dossier.json, parse it, and confirm
+// it has the shape the judge reads — the v1 schema, a screenshots list, and
+// the app files listing inside its text. A half-written or truncated dossier
+// would fail the scorer without a word, so fail here instead, naming the
+// exact problem while the tree is still in front of us.
+const dossierPath = join(out, 'dossier.json');
+let dossier;
+try {
+  dossier = JSON.parse(readFileSync(dossierPath, 'utf-8'));
+} catch (err) {
+  throw new Error(`dossier check: ${dossierPath} did not parse as JSON (${err.message})`);
+}
+if (!dossier || typeof dossier !== 'object' || Array.isArray(dossier)) {
+  throw new Error('dossier check: dossier.json is not a JSON object');
+}
+if (dossier.schema !== 'makefun/dossier/v1') {
+  throw new Error(`dossier check: unexpected schema ${JSON.stringify(dossier.schema)}`);
+}
+if (!Array.isArray(dossier.images) || dossier.images.length === 0) {
+  throw new Error('dossier check: the screenshots list is missing or empty');
+}
+for (const [i, shot] of dossier.images.entries()) {
+  if (!shot || typeof shot.base64 !== 'string' || shot.base64.length === 0) {
+    throw new Error(`dossier check: screenshot ${i} has no base64 image data`);
+  }
+}
+if (typeof dossier.text !== 'string' || !dossier.text.includes('## Sources') || !dossier.text.includes('app/index.html')) {
+  throw new Error('dossier check: the dossier text is missing the app files listing');
+}
 
 // A short summary, so a local run shows what was handed in.
 const shotCount = existsSync(join(here, 'screenshots')) ? readdirSync(join(here, 'screenshots')).length : 0;
