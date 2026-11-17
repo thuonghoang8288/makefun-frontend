@@ -168,5 +168,15 @@ document.getElementById('top-search')?.addEventListener('submit', (e) => {
   }
 });
 
+// Pressing / anywhere (outside a text field) jumps to the header search,
+// so the board can be filtered without reaching for the mouse.
+document.addEventListener('keydown', (e) => {
+  const tag = (e.target?.tagName ?? '').toLowerCase();
+  if (e.key === '/' && tag !== 'input' && tag !== 'select' && tag !== 'textarea') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+
 window.addEventListener('hashchange', render);
 render();

@@ -46,6 +46,9 @@ export function isTakingEntries(b) {
 /** The time until a deadline: '2d 4h left', '35m 12s left', or 'ended'. */
 export function timeLeft(iso) {
   const ms = new Date(iso).getTime() - Date.now();
+  // A deadline the API sent without a usable date is unknown, not zero:
+  // show a dash instead of a nonsense countdown.
+  if (Number.isNaN(ms)) return '—';
   if (ms <= 0) return 'ended';
   const days = Math.floor(ms / 86400000);
   const hours = Math.floor((ms % 86400000) / 3600000);

@@ -26,6 +26,10 @@ body {
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+/* Skip link: parked off-screen until keyboard focus, so keyboard users can jump past the header. */
+.skip { position: absolute; left: -9999px; top: 0; background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 0 0 8px 0; font-weight: 700; z-index: 20; }
+.skip:focus { left: 0; color: #fff; }
+
 a { color: var(--accent-ink); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #b7a8ff; outline-offset: 1px; }

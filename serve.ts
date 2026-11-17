@@ -29,7 +29,7 @@ const MIME: Record<string, string> = {
   '.webmanifest': 'application/manifest+json',
 };
 
-createServer((request, response) => {
+const server = createServer((request, response) => {
   const url = new URL(request.url ?? '/', 'http://localhost');
   let pathname: string;
   try {
@@ -59,6 +59,18 @@ createServer((request, response) => {
     'cache-control': 'no-store',
   });
   createReadStream(file).pipe(response);
-}).listen(port, '127.0.0.1', () => {
+});
+
+// A port that is already taken is the commonest local failure: say so plainly
+// and name the fix, instead of crashing with a bare EADDRINUSE stack.
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`port ${port} is already in use — try node serve.ts --port <n>`);
+    process.exit(1);
+  }
+  throw err;
+});
+
+server.listen(port, '127.0.0.1', () => {
   console.log(`app/ is on http://localhost:${port}`);
 });

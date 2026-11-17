@@ -1,1 +1,6 @@
+# Build output from `MAKEFUN_OUTPUT_DIR=out node main.ts` — regenerated on
+# every run, never committed.
 out/
+
+# Editor and OS clutter, not part of the entry.
+.DS_Store

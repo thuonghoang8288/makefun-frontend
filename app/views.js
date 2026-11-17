@@ -178,7 +178,9 @@ export function leaderboard(b, lb, page, pageSize, query) {
 export function profile(p) {
   const r = p.record ?? {};
   const sols = p.solutions ?? [];
-  const initials = (p.display_name ?? p.handle ?? '?').split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+  // Initials for the avatar fallback: an empty display name leaves nothing to
+  // take initials from, so fall back to '?' rather than a blank circle.
+  const initials = (p.display_name ?? p.handle ?? '?').split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase() || '?';
   const pic = `https://make.fun/api/profiles/${encodeURIComponent(p.handle)}/picture.png`;
   return `
     <section class="profile-head">
